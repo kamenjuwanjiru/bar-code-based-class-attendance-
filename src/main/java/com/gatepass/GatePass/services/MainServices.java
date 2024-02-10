@@ -1,13 +1,16 @@
 package com.gatepass.GatePass.services;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,16 +19,26 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.gatepass.GatePass.barqrgenerator.Generator;
 import com.gatepass.GatePass.dtos.Auth;
+import com.gatepass.GatePass.dtos.MajorQuery;
+import com.gatepass.GatePass.dtos.StoredData;
+import com.gatepass.GatePass.entities.History;
 import com.gatepass.GatePass.entities.MyUser;
+import com.gatepass.GatePass.entities.Personel;
 import com.gatepass.GatePass.entities.Privilege;
 import com.gatepass.GatePass.interfaces.ServicesGuide;
+import com.gatepass.GatePass.repo.HistoryCriteria;
+import com.gatepass.GatePass.repo.HistoryRepo;
 import com.gatepass.GatePass.repo.MyUserRepo;
+import com.gatepass.GatePass.repo.PersonelRepo;
+import com.gatepass.GatePass.utilities.MyMapper;
+import com.gatepass.GatePass.utilities.MyTime;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +51,7 @@ public class MainServices implements ServicesGuide, UserDetailsService{
 
 JsonMapper jsonMapper = new JsonMapper();
     public void response(String result, String message, HttpServletResponse response){
-        
+        response.setContentType("application/json");
         Map<String, String> map = new HashMap<>();
         map.put("result", result);
         map.put("message", message);
@@ -107,12 +120,13 @@ JsonMapper jsonMapper = new JsonMapper();
 
     @Override
     public void login(Auth auth, HttpServletResponse response) {
+        response.setContentType("application/json");
         MyUser myUser = this.getMyUser(auth.getUsername());
         if(myUser == null){
             log.warn("USER DOESNT EXIST");
             this.response("fail", "wrong credentials", response);
         }else{
-            if(encoder.matches(auth.getPassword(), myUser.getPassword())){
+            if(!encoder.matches(auth.getPassword(), myUser.getPassword())){
                 log.warn("PASSWORD WRONG");
                 this.response("fail", "wrong credentials", response);
             }else{
@@ -122,6 +136,7 @@ JsonMapper jsonMapper = new JsonMapper();
                 User user = (User) this.loadUserByUsername(auth.getUsername());
                 String token = this.createAccessToken(user);
                 res.put("token", token);
+                res.put("privilege", myUser.getPrivilege().toString());
                 try{
                     jsonMapper.writeValue(response.getOutputStream(), res);
                 }catch(Exception e){
@@ -129,6 +144,65 @@ JsonMapper jsonMapper = new JsonMapper();
                 }
             }
         }
+    }
+
+    @Autowired
+    PersonelRepo personelRepo;
+    @Autowired
+    HistoryRepo historyRepo;
+    @Autowired
+    MyMapper mapper;
+    
+
+    @Value("${pics.store}")
+    String filePath;
+    @Override
+    public Personel addPersonel(MultipartFile file, String data, HttpServletResponse response) {
+        Personel personel = mapper.StringToJson(data, Personel.class);
+        if(personelRepo.findByUid(personel.getUid())!= null){
+            this.response("fail", "exists", response);
+            return null;
+        }else{
+            StoredData storedData = new StoredData();
+            storedData.setEmail(personel.getEmail());
+            storedData.setUid(personel.getUid());
+            try{
+                file.transferTo(Path.of(filePath+"\\"+personel.getEmail()+"-PRP.jpg"));
+                generator.generateBarAndQrcode(storedData);
+                personelRepo.save(personel);
+                return personel;
+            }catch(Exception e){
+                log.warn(e.getLocalizedMessage());
+                this.response("fail", e.getMessage(), response);
+                return null;
+            }
+        }
+    }
+
+    @Override
+    public Personel getPersonel(MajorQuery majorQuery) {
+        return personelRepo.findByUid(majorQuery.getUid());
+    }
+
+    @Autowired
+    MyTime myTime;
+    @Override
+    public History addHistory(History history) {
+        history.setDate(myTime.dateToday());
+        history.setTimeStamp(myTime.getTimeStamp());
+        MajorQuery majorQuery = new MajorQuery();
+        majorQuery.setUid(history.getUid());
+        Personel personel = this.getPersonel(majorQuery);
+        history.setEmail(personel.getEmail());
+        history.setFullName(personel.getFullName());
+        return historyRepo.save(history);
+    }
+    @Autowired
+    HistoryCriteria historyCriteria;
+
+    @Override
+    public List<History> getHistory(MajorQuery majorQuery) {
+        return historyCriteria.getHistory(majorQuery);
     }
 
     

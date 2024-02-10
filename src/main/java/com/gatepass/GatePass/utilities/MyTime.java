@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MyTime {
     public String getTimeStamp(){
         return ""+ new Date(System.currentTimeMillis());
