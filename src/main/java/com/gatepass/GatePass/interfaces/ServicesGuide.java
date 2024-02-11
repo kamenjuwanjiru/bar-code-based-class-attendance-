@@ -21,4 +21,5 @@ public interface ServicesGuide {
     public Personel getPersonel(MajorQuery majorQuery);
     public History addHistory(History history);
     public List<History> getHistory(MajorQuery majorQuery);
+    public void removePersonel(MajorQuery majorQuery, HttpServletResponse response);
 }

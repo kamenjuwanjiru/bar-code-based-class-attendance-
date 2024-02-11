@@ -36,3 +36,7 @@ async function videoStream(){
 }
 
 videoStream()
+
+$(".back").click(()=>{
+    history.back()
+})

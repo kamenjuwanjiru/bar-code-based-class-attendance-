@@ -1,10 +1,13 @@
 package com.gatepass.GatePass.services;
 
+import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -113,7 +116,7 @@ JsonMapper jsonMapper = new JsonMapper();
 				.withSubject(user.getUsername())
 				.withExpiresAt(new Date(System.currentTimeMillis()+24*60*60*1000))
 				.withIssuer("GATESYSTEM")
-				.withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+				.withClaim("privileges", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 				.sign(algo);
 	
 	}
@@ -203,6 +206,37 @@ JsonMapper jsonMapper = new JsonMapper();
     @Override
     public List<History> getHistory(MajorQuery majorQuery) {
         return historyCriteria.getHistory(majorQuery);
+    }
+
+    @Override
+    public void removePersonel(MajorQuery majorQuery, HttpServletResponse response) {
+        Personel personel = this.getPersonel(majorQuery);
+        if(personel != null){
+            //delete pictures
+            String profilePic = filePath+"\\"+personel.getEmail()+"-PRP.jpg";
+            String barcode = filePath+"\\"+personel.getEmail()+"-BAR.jpg";
+            String qrcode = filePath+"\\"+personel.getEmail()+"-QR.jpg";
+
+            ArrayList<String> files = new ArrayList<>();
+            files.add(profilePic);
+            files.add(barcode);
+            files.add(qrcode);
+
+            Iterator iterator = files.iterator();
+
+            while (iterator.hasNext()) {
+                try{
+                    File file = new File(iterator.next().toString());
+                    file.delete();
+                }catch(Exception e){
+                    log.info(e.getLocalizedMessage());
+                }
+            }
+
+            personelRepo.delete(personel);
+            
+        }
+        this.response("success", "deleted", response);
     }
 
     

@@ -30,7 +30,7 @@ public class MyController {
 
  
 
-    @PostMapping("/register/{who}")
+    @PostMapping("/admin/register/{who}")
     public MyUser register(@PathVariable(value = "who") String who,@RequestBody MyUser user, HttpServletResponse response){
         if(who.equals("admin")){
             return servicesGuide.registerAdminMyUser(user, response);
@@ -42,7 +42,7 @@ public class MyController {
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping("/any/login")
     public void login(@RequestBody Auth auth, HttpServletResponse response){
         servicesGuide.login(auth, response);
     }
@@ -52,12 +52,17 @@ public class MyController {
         return servicesGuide.addPersonel(file, data, response);
     }
 
-    @GetMapping("/getpersonel")
+    @PostMapping("/any/getpersonel")
     public Personel getPersonel(@RequestBody MajorQuery majorQuery){
         return servicesGuide.getPersonel(majorQuery);
     }
 
-    @PostMapping("/addhistory")
+    @PostMapping("/deletepersonel")
+    public void deletepersonel(@RequestBody MajorQuery majorQuery, HttpServletResponse response){
+        servicesGuide.removePersonel(majorQuery, response);
+    }
+
+    @PostMapping("/any/addhistory")
     public History addHistory(@RequestBody History history){
         return servicesGuide.addHistory(history);
     }
