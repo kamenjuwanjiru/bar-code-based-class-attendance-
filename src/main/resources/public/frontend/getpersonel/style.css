@@ -1,3 +1,35 @@
 .nothingfound, .found{
     display: none;
 }
+
+body{
+    text-align: center;
+}
+.danger{
+    color: red;
+}
+.delete{
+    padding: 10px;
+    margin: 10px;
+    font-size: 18px;
+    background-color: red;
+}
+.back{
+    padding: 10px;
+    margin: 5px;
+    background-color: brown;
+    color: wheat;
+    font-size: 15px;
+}
+input{
+    padding: 10px;
+    margin: 5px;
+    font-size: 15px;
+}
+.look{
+    padding: 10px;
+    margin: 5px;
+    background-color: green;
+    color: wheat;
+    font-size: 15px;
+}

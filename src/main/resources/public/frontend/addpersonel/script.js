@@ -45,3 +45,4 @@ $(".submit").click(()=>{
 $(".back").click(()=>{
     window.location = "../junction/index.html"
 })
+$(".footer").load("../footer/index.html")

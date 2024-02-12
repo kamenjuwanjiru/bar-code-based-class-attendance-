@@ -7,17 +7,23 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+
+   <div class="container">
     <div class="form">
-        <input type="text" placeholder="username" id="username">
+        <h2>LOGIN</h2>
+        <input type="text" placeholder="username" id="username" required>
         <br>
-        <input type="password" placeholder="password" id="password">
+        <input type="password" placeholder="password" id="password" required>
         <br>
         <button id="submit">Login</button>
-        <br>
+        <br> 
+        <div class="loader">
+            <p>Processing ...</p>
+        </div>
     </div>
-    <div class="loader">
-        <p>Processing ...</p>
-    </div>
+ 
+    <div class="footer"></div>
+   </div>
     <script src="../jquery-3.7.1.js"></script>
     <script src="./script.js"></script>
 </body>

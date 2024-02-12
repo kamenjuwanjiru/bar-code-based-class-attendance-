@@ -35,3 +35,5 @@ $(".loader").css({
         }
     })
 })
+
+$(".footer").load("../footer/index.html")

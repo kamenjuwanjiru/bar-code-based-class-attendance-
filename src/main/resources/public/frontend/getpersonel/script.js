@@ -76,3 +76,5 @@ $(".delete").click(()=>{
         })
     }
 })
+
+$(".footer").load("../footer/index.html")

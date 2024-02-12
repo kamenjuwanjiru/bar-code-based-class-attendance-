@@ -1,3 +1,38 @@
 .loader{
     display: none;
 }
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form{
+    width: 50%;
+    height: 30vh;
+    background-color: cornflowerblue;
+}
+.container{
+    text-align: center;
+}
+.form h2{
+    color: aliceblue;
+}
+.form input{
+    margin: 5px;
+    padding: 3px;
+    font-size: 19px;
+    border: none;
+    box-sizing: border-box;
+    box-shadow: 0 5px 5px black;
+    border-radius: 2px;
+    outline: none;
+}
+
+.form button{
+    margin: 20px;
+    padding: 5px;
+    font-size: 1em;
+    width: 70px;
+    background-color: green;
+    color: wheat;
+}

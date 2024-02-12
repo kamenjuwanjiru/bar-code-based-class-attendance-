@@ -36,3 +36,4 @@ $(".submit").click(()=>{
 
     })
 })
+$(".footer").load("../footer/index.html")

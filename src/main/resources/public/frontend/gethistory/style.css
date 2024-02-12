@@ -13,3 +13,23 @@ td{
     height: 30px;
 }
 
+
+input{
+    padding: 10px;
+    margin: 5px;
+    font-size: 15px;
+}
+.back{
+    padding: 10px;
+    margin: 5px;
+    background-color: brown;
+    color: wheat;
+    font-size: 15px;
+}
+.submit{
+    padding: 10px;
+    margin: 5px;
+    background-color: green;
+    color: wheat;
+    font-size: 15px;
+}

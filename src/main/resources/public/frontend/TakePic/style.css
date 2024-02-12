@@ -1,9 +1,26 @@
 body{
     padding: 0px;
     margin: 0px;
+    text-align: center;
 }
-.picSection{
-    height: 400px;
-    width: 700px;
-    background-color: green;
+body{
+    background-color: aqua;
+}
+.capture{
+    position: relative;
+    margin-top: -600px;
+    padding: 10px;
+    background-color: wheat;
+    font-size: 20px;
+}
+.back{
+    color: white;
+    background-color: brown;
+    font-size: 20px;
+    padding: 7px;
+    margin: 5px;
+}
+input{
+    padding: 3px;
+    font-size: 18px;
 }

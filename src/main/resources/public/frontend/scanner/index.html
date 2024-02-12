@@ -4,11 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scanner</title>
-    <script src="./node_modules/html5-qrcode/html5-qrcode.min.js"></script>
+    
    <style>
+    body{
+        background-color: aqua;
+        text-align: center;
+    }
     main{
         height: 500px;
         width: 700px;
+    }
+    .scanner{
+        margin-left: 20%;
+    }
+    button{
+        padding: 5px;
+        background-color: brown;
+        font-size: 20px;
+        color: wheat;
     }
    </style>
 </head>
@@ -16,10 +29,15 @@
     <div class="nav">
         <button class="back">Back</button>
     </div>
+    <hr>
+ <div class="scanner">
     <main>
         <div id="reader"></div>
-        <div id="result"></div>
     </main>
+ </div>
+ <audio src="../voices/accessgranted.mp3" class="granted" hidden></audio>
+ <audio src="../voices/accessdenied.mp3" class="denied" hidden></audio>
+    <script src="./node_modules/html5-qrcode/html5-qrcode.min.js"></script>
     <script src="../jquery-3.7.1.js"></script>
     <script src="./script.js"></script>
 

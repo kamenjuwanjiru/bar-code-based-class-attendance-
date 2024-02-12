@@ -54,3 +54,4 @@ function formatDate(date){
     date = `${date[2]}-${date[1]}-${date[0]}`
     return date
 }
+$(".footer").load("../footer/index.html")

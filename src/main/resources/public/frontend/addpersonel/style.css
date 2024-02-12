@@ -1,0 +1,26 @@
+body{
+    text-align: center;
+}
+input{
+    padding: 3px;
+    margin: 10px;
+    font-size: 18px;
+}
+.form{
+    padding: 10px;
+    background-color: cornflowerblue;
+}
+.back{
+    padding: 3px;
+    margin: 10px;
+    font-size: 18px;
+    background-color: brown;
+    color: wheat    ;
+}
+.submit{
+    padding: 3px;
+    margin: 10px;
+    font-size: 18px;
+    background-color: green;
+    color: wheat    ;
+}
