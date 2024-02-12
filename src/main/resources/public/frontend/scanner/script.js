@@ -2,8 +2,8 @@
 const camera = document.querySelector("#html5-qrcode-button-camera-start")
 const scanner =new Html5QrcodeScanner('reader',{
     qrbox:{
-        width: 300,
-        height: 300
+        width: 400,
+        height: 400
     }, 
      fps: 20,
 })

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get History</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="nav">
+        <button class="back">Back</button>
+    </div>
+    <div class="search">
+        <div class="options">
+            Date: <input type="date" name="" id="" class="date">
+            Email: <input type="text" name="" id="" class="email">
+            Unique Id: <input type="text" class="uid">
+            <button class="submit">Search</button>
+        </div>
+        <div class="results">
+            <table>
+                <thead>
+                   <tr>
+                    <th>No.</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>UID</th>
+                    <th>Date</th>
+                    <th>Timestamp</th>
+                   </tr>
+                </thead>
+                <tbody class="tbody">
+                    <!-- append results here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../jquery-3.7.1.js"></script>
+    <script src="../utility/access-storage.js"></script>
+    <script src="../utility/constantholder.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>

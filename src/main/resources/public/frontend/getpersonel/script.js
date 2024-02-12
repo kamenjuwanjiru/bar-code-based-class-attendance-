@@ -34,7 +34,7 @@ $(".look").click(()=>{
                 })
                 //displaying details
                 document.querySelector(".profilepic").src = `../pics/${results.email}-PRP.jpg`
-                document.querySelector(".fullname").textContent = results.fullname
+                document.querySelector(".fullname").textContent = results.fullName
                 document.querySelector(".uid").textContent = results.uid
                 document.querySelector(".email").textContent = results.email
                 document.querySelector(".barcode").src = `../pics/${results.email}-BAR.jpg`
@@ -55,7 +55,7 @@ $(".delete").click(()=>{
     if(confirm("Do you want to delete this personel?")){
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/deletepersonel",
+            url: url+"deletepersonel",
             contentType: "application/json",
             data: JSON.stringify({
                 "uid": uid.val()

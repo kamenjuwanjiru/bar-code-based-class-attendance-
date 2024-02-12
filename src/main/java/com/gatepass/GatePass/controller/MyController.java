@@ -67,7 +67,7 @@ public class MyController {
         return servicesGuide.addHistory(history);
     }
 
-    @GetMapping("/gethistory")
+    @PostMapping("/gethistory")
     public List<History> getHistory(@RequestBody MajorQuery majorQuery){
         return servicesGuide.getHistory(majorQuery);
     }
