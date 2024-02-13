@@ -15,7 +15,7 @@ public class SecurityConf {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)throws Exception{
         return httpSecurity
         .csrf((csrf)->csrf.disable())
-        .authorizeHttpRequests((authorizeHttpRequests)->authorizeHttpRequests.requestMatchers("/frontend/**", "/any/**","/favicon").permitAll())
+        .authorizeHttpRequests((authorizeHttpRequests)->authorizeHttpRequests.requestMatchers("/frontend/**", "/any/**").permitAll())
         .authorizeHttpRequests((authorizeHttpRequests)-> authorizeHttpRequests.requestMatchers("/admin/**").hasAuthority("ADMIN"))
         .authorizeHttpRequests((authorizeHttpRequests)-> authorizeHttpRequests.requestMatchers("/rep/**").hasAuthority("REP"))
         .authorizeHttpRequests((authorizeHttpRequests)->authorizeHttpRequests.anyRequest().authenticated())
