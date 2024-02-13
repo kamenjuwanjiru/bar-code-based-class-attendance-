@@ -1,0 +1,7 @@
+package com.gatepass.GatePass.utilities;
+
+public class EmailException extends Exception{
+    public EmailException(String message){
+        super(message);
+    }
+}

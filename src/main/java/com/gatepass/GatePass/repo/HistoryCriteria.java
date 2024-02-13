@@ -15,8 +15,10 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
+@Slf4j
 public class HistoryCriteria {
     @Autowired
     EntityManager em;
@@ -27,16 +29,25 @@ public class HistoryCriteria {
         List<Predicate> predicates = new ArrayList<>();
         
         if(majorQuery.getDate() != null){
+            log.info("queried with date");
             Predicate datePredicate = criteriaBuilder.like( root.get("date"), "%"+majorQuery.getDate()+"%");
             predicates.add(datePredicate);
         }
-        if(majorQuery.getEmail() != null){
-            Predicate emailPredicate = criteriaBuilder.like( root.get("email"), "%"+majorQuery.getEmail()+"%");
-            predicates.add(emailPredicate);
+        if(majorQuery.getUnitCode() != null){
+            log.info("queried with unit code");
+            Predicate unitCodePredicate = criteriaBuilder.like( root.get("unitCode"), "%"+majorQuery.getUnitCode()+"%");
+            predicates.add(unitCodePredicate);
         }
         if(majorQuery.getUid() != null ){
+            log.info("queried with uid");
             Predicate uidPredicate = criteriaBuilder.like( root.get("uid"), "%"+majorQuery.getUid()+"%");
             predicates.add(uidPredicate);
+        }
+
+        if(majorQuery.getStaffNo() != null){
+            log.info("queried with staff no");
+            Predicate staffNoPredicate = criteriaBuilder.like(root.get("staffNo"), "%"+majorQuery.getStaffNo()+"%");
+            predicates.add(staffNoPredicate);
         }
         //select * from history where ""= ? and "" = ?......
         Predicate finalPredicate = criteriaBuilder.and(predicates.toArray(new Predicate[0]));

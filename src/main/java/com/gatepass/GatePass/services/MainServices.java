@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,16 +31,20 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.gatepass.GatePass.barqrgenerator.Generator;
 import com.gatepass.GatePass.dtos.Auth;
 import com.gatepass.GatePass.dtos.MajorQuery;
+import com.gatepass.GatePass.dtos.PassUpdate;
 import com.gatepass.GatePass.dtos.StoredData;
 import com.gatepass.GatePass.entities.History;
 import com.gatepass.GatePass.entities.MyUser;
 import com.gatepass.GatePass.entities.Personel;
 import com.gatepass.GatePass.entities.Privilege;
+import com.gatepass.GatePass.entities.Unit;
 import com.gatepass.GatePass.interfaces.ServicesGuide;
 import com.gatepass.GatePass.repo.HistoryCriteria;
 import com.gatepass.GatePass.repo.HistoryRepo;
 import com.gatepass.GatePass.repo.MyUserRepo;
 import com.gatepass.GatePass.repo.PersonelRepo;
+import com.gatepass.GatePass.repo.UnitRepo;
+import com.gatepass.GatePass.utilities.EmailSender;
 import com.gatepass.GatePass.utilities.MyMapper;
 import com.gatepass.GatePass.utilities.MyTime;
 
@@ -157,6 +162,8 @@ JsonMapper jsonMapper = new JsonMapper();
     MyMapper mapper;
     
 
+    @Autowired
+    EmailSender emailSender;
     @Value("${pics.store}")
     String filePath;
     @Override
@@ -170,8 +177,10 @@ JsonMapper jsonMapper = new JsonMapper();
             storedData.setEmail(personel.getEmail());
             storedData.setUid(personel.getUid());
             try{
-                file.transferTo(Path.of(filePath+"\\"+personel.getEmail()+"-PRP.jpg"));
+                filePath += "\\"+personel.getEmail();
+                file.transferTo(Path.of(filePath+"-PRP.jpg"));
                 generator.generateBarAndQrcode(storedData);
+                emailSender.sendEmail(new File(filePath+"-QR.jpg"), new File(filePath+"-BAR.jpg"), personel.getEmail());
                 personelRepo.save(personel);
                 return personel;
             }catch(Exception e){
@@ -193,6 +202,7 @@ JsonMapper jsonMapper = new JsonMapper();
     public History addHistory(History history) {
         history.setDate(myTime.dateToday());
         history.setTimeStamp(myTime.getTimeStamp());
+        history.setStaffNo(this.getStaffNumber());
         MajorQuery majorQuery = new MajorQuery();
         majorQuery.setUid(history.getUid());
         Personel personel = this.getPersonel(majorQuery);
@@ -237,6 +247,45 @@ JsonMapper jsonMapper = new JsonMapper();
             
         }
         this.response("success", "deleted", response);
+    }
+    @Autowired
+    UnitRepo unitRepo;
+
+    @Override
+    public Unit addOrUpdateUnit(Unit unit) {
+        Unit unit2 = unitRepo.findByUnitCode(unit.getUnitCode());
+        if(unit2 == null){
+            unit.setStaffNo(this.getStaffNumber());
+            unitRepo.save(unit);
+            return unit;
+        }else{
+            unit2.setStaffNo(this.getStaffNumber());
+            unit2.setUnitName(unit.getUnitName());
+            unitRepo.save(unit2);
+            return unit2;
+        }
+    }
+
+    @Override
+    public String getStaffNumber() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    @Override
+    public List<Unit> getUnits() {
+        return unitRepo.findAllByStaffNo(this.getStaffNumber());
+    }
+
+    @Override
+    public boolean updatePassword(PassUpdate passUpdate) {
+       MyUser myUser = myUserRepo.findByUsername(this.getStaffNumber());
+       if(encoder.matches(passUpdate.getOldPassword(), myUser.getPassword())){
+            myUser.setPassword(encoder.encode(passUpdate.getNewPassword()));
+            myUserRepo.save(myUser);
+            return true;
+       }else{
+            return false;
+       }
     }
 
     

@@ -1,4 +1,4 @@
-const username = $(".username"), password = $(".password"), who = $(".who")
+const username = $(".username"), password = $(".password"), who = $(".who"), fullname = $(".fullname"), email = $(".email")
 
 $(".back").click(()=>{window.location = "../junction/index.html"})
 
@@ -12,8 +12,10 @@ if(storedData.privilege != "ADMIN"){
 $(".submit").click(()=>{
     var myData = {
         "username": username.val(),
-        "password": password.val()
-    }
+        "password": password.val(),
+        "email": email.val(),
+        "fullName": fullname.val()
+        }
 
     $.ajax({
         type: "POST",

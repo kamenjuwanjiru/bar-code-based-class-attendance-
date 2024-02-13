@@ -15,7 +15,7 @@ $(".loader").css({
 })
     $.ajax({
         type: "POST",
-        url:"http://localhost:8080/any/login",
+        url:url+"any/login",
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function(results){

@@ -3,6 +3,7 @@ package com.gatepass.GatePass.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,14 +14,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.gatepass.GatePass.dtos.Auth;
 import com.gatepass.GatePass.dtos.MajorQuery;
+import com.gatepass.GatePass.dtos.PassUpdate;
 import com.gatepass.GatePass.entities.History;
 import com.gatepass.GatePass.entities.MyUser;
 import com.gatepass.GatePass.entities.Personel;
+import com.gatepass.GatePass.entities.Unit;
 import com.gatepass.GatePass.interfaces.ServicesGuide;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-
 
 @RestController
 @Slf4j
@@ -62,7 +64,7 @@ public class MyController {
         servicesGuide.removePersonel(majorQuery, response);
     }
 
-    @PostMapping("/any/addhistory")
+    @PostMapping("/rep/addhistory")
     public History addHistory(@RequestBody History history){
         return servicesGuide.addHistory(history);
     }
@@ -72,4 +74,17 @@ public class MyController {
         return servicesGuide.getHistory(majorQuery);
     }
 
+    @PostMapping("/rep/addupdateunit")
+    public Unit addOrUpdateUnit(@RequestBody Unit unit){
+        return servicesGuide.addOrUpdateUnit(unit);
+    }
+    @GetMapping("/rep/getunits")
+    public List<Unit> getUnits(){
+        return servicesGuide.getUnits();
+    }
+
+    @PostMapping("/updatepass")
+    public boolean updatepass(@RequestBody PassUpdate passUpdate){
+        return servicesGuide.updatePassword(passUpdate);
+    }
 }

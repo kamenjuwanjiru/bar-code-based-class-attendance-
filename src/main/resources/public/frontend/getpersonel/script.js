@@ -24,7 +24,7 @@ $(".look").click(()=>{
     $.ajax({
         type:"POST",
         contentType: "application/json",
-        url:"http://localhost:8080/any/getpersonel",
+        url:url+"any/getpersonel",
         data: JSON.stringify(data),
         success: function(results){
             console.log(results)
@@ -48,6 +48,7 @@ $(".look").click(()=>{
     
     })
 })
+
 
 //delete personel
 $(".delete").click(()=>{

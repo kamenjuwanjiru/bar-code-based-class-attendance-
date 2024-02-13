@@ -8,13 +8,11 @@ import lombok.Data;
 
 @Entity
 @Data
-public class MyUser {
+public class Unit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String username;//staff no
-    private String password;
-    private Privilege privilege;
-    private String fullName;
-    private String email;
+    private String unitCode;
+    private String staffNo;
+    private String unitName;
 }

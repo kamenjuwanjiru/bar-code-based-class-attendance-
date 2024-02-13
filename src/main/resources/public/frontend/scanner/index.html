@@ -23,6 +23,11 @@
         font-size: 20px;
         color: wheat;
     }
+    .options{
+        padding: 10px;
+    margin: 5px;
+    font-size: 15px;
+    }
    </style>
 </head>
 <body>
@@ -30,14 +35,21 @@
         <button class="back">Back</button>
     </div>
     <hr>
+    <div class="unitsselekta">
+        <select name="" class="options" id="">
+        </select>
+    </div>
  <div class="scanner">
     <main>
         <div id="reader"></div>
+        <div class="results"></div>
     </main>
  </div>
  <audio src="../voices/accessgranted.mp3" class="granted" hidden></audio>
  <audio src="../voices/accessdenied.mp3" class="denied" hidden></audio>
     <script src="./node_modules/html5-qrcode/html5-qrcode.min.js"></script>
+    <script src="../utility/constantholder.js"></script>
+    <script src="../utility/access-storage.js"></script>
     <script src="../jquery-3.7.1.js"></script>
     <script src="./script.js"></script>
 

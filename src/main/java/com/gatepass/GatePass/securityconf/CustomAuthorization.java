@@ -30,10 +30,12 @@ public class CustomAuthorization extends OncePerRequestFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+                log.info("servlet path: "+ request.getServletPath());
                 ArrayList<String> accepted = new ArrayList<>();
                 accepted.add("/login");
                 accepted.add("/frontend");
                 accepted.add("/any");
+                accepted.add("/favicon");
 //allow some requests through without authorization
                 if(this.checkIfMatches(request.getServletPath(), accepted)){
                     log.info(request.getServletPath()+" has been let through");

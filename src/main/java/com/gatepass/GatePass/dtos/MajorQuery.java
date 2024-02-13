@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class MajorQuery {
     private String uid;
-    private String email;
+    private String unitCode;
     private String date;
+    private String staffNo;
 }
