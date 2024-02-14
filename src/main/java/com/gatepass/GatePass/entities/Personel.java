@@ -15,4 +15,5 @@ public class Personel {
     private String uid;
     private String email;
     private String fullName;
+    private String idNo;
 }

@@ -19,4 +19,5 @@ public class History {
     private String timeStamp;
     private String unitCode;
     private String staffNo;
+    private String idNo;
 }

@@ -1,7 +1,7 @@
 // const { Html5QrcodeScanner } = require("html5-qrcode");
 const camera = document.querySelector("#html5-qrcode-button-camera-start")
-, denied = document.querySelector(".denied")
-, granted = document.querySelector(".granted")
+// , denied = document.querySelector(".denied")
+// , granted = document.querySelector(".granted")
 const scanner =new Html5QrcodeScanner('reader',{
     qrbox:{
         width: 500,
@@ -18,19 +18,9 @@ scanner.render(success, error)
 function success(result){
    scanner.clear()
     console.log(result)
-    document.querySelector(".results").innerHTML+=`${result}<br>`
-    if(!result.includes("StoredData")){
-        setTimeout(()=>{
-            badCode();
-        }, 100)
-    }else{
-        
-         //getting uid from scan result
-    result = result.split(",")[1].split("=")[1].split(")")[0]
-        
-    console.log(result)
+    
     const data = {
-        "uid": result,
+        "idNo": result,
         "unitCode": $(".options").val()
     }
     $.ajax({
@@ -40,13 +30,17 @@ function success(result){
         data: JSON.stringify(data),
         success: function(results){
             console.log(results)
+            var newData = {
+                "idNo": results.idNo,
+                "unitCode": $(".options").val()
+            }
             if(results){
                 //found the person being authenticated
                 $.ajax({
                     type: "POST",
                     url: url+"rep/addhistory",
                     contentType: "application/json",
-                    data: JSON.stringify(data),
+                    data: JSON.stringify(newData),
                     headers:{
                         "Authorization": `Bearer ${storedData.token}`
                     },
@@ -64,25 +58,29 @@ function success(result){
     })
     }
     
-}
 
 
 function error(){
     // console.log("there was a problem")
 }
 
-
+ var results = document.querySelector(".results");
 $(".back").click(()=>{history.back()})
 
  function badCode(){ 
-    denied.play()
+    // denied.play()
+    results.style.color = "red"
+    results.innerHTML = "BAD CODE"
     scanner.render(success, error) 
     console.log("bad code provided")
   
 }
 
 function goodCode(){
-    granted.play()
+    // granted.play()
+   
+    results.style.color = "green"
+    results.innerHTML = "GOOD CODE"
     scanner.render(success, error)
     console.log("good code")
 }

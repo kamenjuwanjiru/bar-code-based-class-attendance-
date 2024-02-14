@@ -175,12 +175,14 @@ JsonMapper jsonMapper = new JsonMapper();
         }else{
             StoredData storedData = new StoredData();
             storedData.setEmail(personel.getEmail());
-            storedData.setUid(personel.getUid());
+            String idNo = generator.genString();
+            storedData.setIdNo(idNo);
+            personel.setIdNo(idNo);
             try{
-                filePath += "\\"+personel.getEmail();
-                file.transferTo(Path.of(filePath+"-PRP.jpg"));
+                String myfile = filePath + "\\"+personel.getEmail();
+                file.transferTo(Path.of(myfile+"-PRP.jpg"));
                 generator.generateBarAndQrcode(storedData);
-                emailSender.sendEmail(new File(filePath+"-QR.jpg"), new File(filePath+"-BAR.jpg"), personel.getEmail());
+                emailSender.sendEmail(new File(myfile+"-QR.jpg"), new File(myfile+"-BAR.jpg"), personel.getEmail());
                 personelRepo.save(personel);
                 return personel;
             }catch(Exception e){
@@ -193,22 +195,38 @@ JsonMapper jsonMapper = new JsonMapper();
 
     @Override
     public Personel getPersonel(MajorQuery majorQuery) {
-        return personelRepo.findByUid(majorQuery.getUid());
+        if(majorQuery.getIdNo() != null){
+            String idNo = majorQuery.getIdNo();
+            if(idNo.length()>12){
+                return personelRepo.findByIdNo(majorQuery.getIdNo().substring(0, majorQuery.getIdNo().length()-1));
+            }else{
+                return personelRepo.findByIdNo(idNo);
+            }
+        }else{
+            return personelRepo.findByUid(majorQuery.getUid());
+        }
+      
     }
 
     @Autowired
     MyTime myTime;
     @Override
     public History addHistory(History history) {
-        history.setDate(myTime.dateToday());
+        History history2 = historyRepo.findByDateAndIdNo(myTime.dateToday(), history.getIdNo());
+        if(history2 == null){
+            history.setDate(myTime.dateToday());
         history.setTimeStamp(myTime.getTimeStamp());
         history.setStaffNo(this.getStaffNumber());
         MajorQuery majorQuery = new MajorQuery();
-        majorQuery.setUid(history.getUid());
+        majorQuery.setIdNo(history.getIdNo());
         Personel personel = this.getPersonel(majorQuery);
         history.setEmail(personel.getEmail());
         history.setFullName(personel.getFullName());
+        history.setUid(personel.getUid());
         return historyRepo.save(history);
+        }else{
+            return history2;
+        }
     }
     @Autowired
     HistoryCriteria historyCriteria;

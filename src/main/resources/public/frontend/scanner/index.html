@@ -28,6 +28,10 @@
     margin: 5px;
     font-size: 15px;
     }
+    .results{
+        position: absolute;
+        font-size: 30px;
+    }
    </style>
 </head>
 <body>
@@ -41,12 +45,13 @@
     </div>
  <div class="scanner">
     <main>
-        <div id="reader"></div>
         <div class="results"></div>
+        <div id="reader"></div>
+        
     </main>
  </div>
- <audio src="../voices/accessgranted.mp3" class="granted" hidden></audio>
- <audio src="../voices/accessdenied.mp3" class="denied" hidden></audio>
+ <!-- <audio src="../voices/accessgranted.mp3" class="granted" hidden></audio>
+ <audio src="../voices/accessdenied.mp3" class="denied" hidden></audio> -->
     <script src="./node_modules/html5-qrcode/html5-qrcode.min.js"></script>
     <script src="../utility/constantholder.js"></script>
     <script src="../utility/access-storage.js"></script>

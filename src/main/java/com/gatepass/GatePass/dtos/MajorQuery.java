@@ -8,4 +8,5 @@ public class MajorQuery {
     private String unitCode;
     private String date;
     private String staffNo;
+    private String idNo;
 }
