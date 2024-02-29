@@ -6,7 +6,12 @@ $(".submit").click(()=>{
         "uid": $(".uid").val(),
         "email": $(".email").val()
     }
-
+    $(".submit").css({
+        "display": "none"
+    })
+    $(".loader").css({
+        "display": "block"
+    })
     var formData = new FormData()
 
     var image = document.querySelector(".image").files[0]
@@ -35,6 +40,12 @@ $(".submit").click(()=>{
                     alert("Personel added")
                     window.location.reload()
                 }else{
+                    $(".submit").css({
+                        "display": "block"
+                    })
+                    $(".loader").css({
+                        "display": "none"
+                    })
                     alert("personel Exists")
                 }
             }

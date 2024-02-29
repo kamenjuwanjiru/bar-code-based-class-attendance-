@@ -48,6 +48,11 @@ function success(result){
                         console.log(results)
                     }
                 })
+
+                var image = document.querySelector(".image")
+
+                image.src = `../pics/${results.email}-PRP.jpg`
+
                 goodCode()
                 
             }else{

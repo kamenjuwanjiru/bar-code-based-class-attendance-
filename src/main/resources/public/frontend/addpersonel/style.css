@@ -24,3 +24,6 @@ input{
     background-color: green;
     color: wheat    ;
 }
+.loader{
+    display: none;
+}

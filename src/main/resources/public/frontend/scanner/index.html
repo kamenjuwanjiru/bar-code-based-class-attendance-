@@ -14,9 +14,7 @@
         height: 500px;
         width: 700px;
     }
-    .scanner{
-        margin-left: 20%;
-    }
+
     button{
         padding: 5px;
         background-color: brown;
@@ -32,6 +30,15 @@
         position: absolute;
         font-size: 30px;
     }
+    .both{
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+    }
+    .both img{
+        width: 300px;
+    }
    </style>
 </head>
 <body>
@@ -43,12 +50,14 @@
         <select name="" class="options" id="">
         </select>
     </div>
- <div class="scanner">
-    <main>
-        <div class="results"></div>
-        <div id="reader"></div>
-        
-    </main>
+ <div class="both">
+     <div class="scanner">
+         <main>
+             <div class="results"></div>
+             <div id="reader"></div>
+         </main>
+     </div>
+     <img src="../pics/download.png" class="image">
  </div>
  <!-- <audio src="../voices/accessgranted.mp3" class="granted" hidden></audio>
  <audio src="../voices/accessdenied.mp3" class="denied" hidden></audio> -->
